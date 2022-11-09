@@ -31,6 +31,12 @@ async function run(){
             const result =await cursor.limit(3).toArray()
             res.send(result)
         })
+        app.get("/allservices",async(req,res)=>{
+            const qurey ={}
+            const cursor = servicesCollcation.find(qurey)
+            const result =await cursor.limit(3).toArray()
+            res.send(result)
+        })
         
 
     }
