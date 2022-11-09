@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const app= express()
 require('dotenv').config()
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 
 // Amer-kitchen
 // U7g3RhJaoRGjq1ae
@@ -34,7 +34,13 @@ async function run(){
         app.get("/allservices",async(req,res)=>{
             const qurey ={}
             const cursor = servicesCollcation.find(qurey)
-            const result =await cursor.limit(3).toArray()
+            const result =await cursor.toArray()
+            res.send(result)
+        })
+        app.get('/allservices/:id',async(req,res)=>{
+            const id =req.params.id
+            const qurey ={_id:ObjectId(id)}
+            const result= await servicesCollcation.findOne(qurey)
             res.send(result)
         })
         
