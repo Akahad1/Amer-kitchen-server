@@ -26,6 +26,27 @@ async function run(){
         const servicesCollcation=client.db('Amer-kitchen').collection('Serves')
         const reviewsCollcation=client.db('Amer-kitchen').collection('reviews')
 
+
+        function verifyToken( req,res,next){
+            const  authHeader =req.headers.authroization
+            if(!authHeader){
+                return res.status(403).send({maceass:"unauthraization"})
+            }
+            const token =authHeader.split(' ')[1]
+            jwt.verify(token,process.env.USER_TOKEN,function(error,decoded){
+                if(error){
+                    return res.status(403).send({maceass:"unauthraization"})
+        
+                }
+                res.decoded =decoded
+                next()
+            })
+            
+        }
+
+
+
+
         app.get("/services",async(req,res)=>{
             const qurey ={}
             const cursor = servicesCollcation.find(qurey)
@@ -57,7 +78,7 @@ async function run(){
             console.log(review)
             const result =await reviewsCollcation.insertOne(review)
             res.send(result)})
-        app.get('/reviews',async (req,res)=>{
+        app.get('/reviews',verifyToken,async (req,res)=>{
             // const email =req.qurey.email
             // console.log(email)
 
@@ -94,6 +115,12 @@ async function run(){
             
             // res.send(result)
         })
+        app.post('/jwt',async(req,res)=>{
+            const user =req.body
+            const token =jwt.sign(user,process.env.USER_TOKEN,{expiresIn : '3d'})
+            console.log(user)
+            res.send({token})
+           })
 
         
         
