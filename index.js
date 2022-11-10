@@ -57,6 +57,28 @@ async function run(){
             console.log(review)
             const result =await reviewsCollcation.insertOne(review)
             res.send(result)})
+        app.get('/reviews',async (req,res)=>{
+            // const email =req.qurey.email
+            // console.log(email)
+
+            let qurey ={}
+            
+            if(req.query.email){
+                qurey={
+                    email :req.query.email
+                }
+            }
+            const cursor =reviewsCollcation.find(qurey)
+            const result =await cursor.toArray()
+            res.send(result)  
+        })
+        app.delete("/reviews/:id",async(req,res)=>{
+            const id=req.params.id
+            const qurey ={_id :ObjectId(id)}
+            const result= await reviewsCollcation.deleteOne(qurey)
+            res.send(result)})
+
+        
         
 
     }
