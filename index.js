@@ -78,6 +78,23 @@ async function run(){
             const result= await reviewsCollcation.deleteOne(qurey)
             res.send(result)})
 
+        app.get("/reviews/:id",async(req,res)=>{
+            const id=req.params.id
+            console.log(id)
+            let qurey ={}
+            if(req.params.id){
+                qurey={
+                    servesid :id   }
+            }
+
+            const cursor = reviewsCollcation.find(qurey)
+            const result =await cursor.toArray()
+            res.send(result)
+            
+            
+            // res.send(result)
+        })
+
         
         
 
