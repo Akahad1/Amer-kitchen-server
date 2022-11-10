@@ -78,7 +78,7 @@ async function run(){
             console.log(review)
             const result =await reviewsCollcation.insertOne(review)
             res.send(result)})
-        app.get('/reviews',verifyToken,async (req,res)=>{
+        app.get('/reviews',async (req,res)=>{
             // const email =req.qurey.email
             // console.log(email)
 
